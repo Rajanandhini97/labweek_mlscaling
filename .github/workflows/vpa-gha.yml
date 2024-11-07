@@ -1,0 +1,83 @@
+name: Update Vertical Pod Autoscaler yml and apply changes
+run-name: Update Vertical Pod Autoscaler yml and apply changes
+
+on:
+  push:
+    branches:
+      - vpa-gha
+env:
+  MIN_CPU: 250m
+  MAX_CPU: 1
+  MIN_MEMORY: 250Mi
+  MAX_MEMORY: 1Gi
+
+jobs:
+  update-vpa:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12.5'  
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml
+
+      - name: Install kubectl
+        run: |
+          KUBECTL_VERSION=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)
+          curl -LO "https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
+          chmod +x kubectl
+          sudo mv kubectl /usr/local/bin/
+
+      # - name: Set up Minikube
+      #   run: |
+      #     curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+      #     chmod +x minikube
+      #     sudo mv minikube /usr/local/bin/
+
+      #     minikube start --driver=none
+
+      - name: Update Vertical Pod Autoscaler YAML
+        run: |
+          export MIN_CPU=500m
+          export MAX_CPU=2
+          export MIN_MEMORY=500Mi
+          export MAX_MEMORY=2Gi
+          python3 update_vpa.py
+          cat vpa.yml
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "git_bot@example.com"
+          git config --local user.name "git_bot"
+          
+      - name: Commit changes to repo
+        run: |
+            ls -a
+            if git diff --quiet -- vpa.yml; then
+            echo "No changes to vpa.yml."
+            else
+            git add vpa.yml
+            git commit -m "Update VPA"
+            git push
+            fi            
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
+
+      - name: Set up kubeconfig
+        env:
+          KUBECONFIG_CONTENT: ${{ secrets.KUBECONFIG_CONTENT }}
+        run: |
+          echo "${{ secrets.KUBECONFIG_CONTENT }}" > ~/.kube/config
+          chmod 600 ~/.kube/config
+
+      - name: Apply VPA to Minikube
+        run: |
+          kubectl apply -f vpa.yml
