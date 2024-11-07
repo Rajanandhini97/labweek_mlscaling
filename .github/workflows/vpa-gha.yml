@@ -75,6 +75,7 @@ jobs:
         env:
           KUBECONFIG_CONTENT: ${{ secrets.KUBECONFIG_CONTENT }}
         run: |
+          mkdir -p ~/.kube
           echo "${{ secrets.KUBECONFIG_CONTENT }}" > ~/.kube/config
           chmod 600 ~/.kube/config
 
