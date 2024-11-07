@@ -46,9 +46,9 @@ jobs:
 
       - name: Update Vertical Pod Autoscaler YAML
         run: |
-          export MIN_CPU=500m
+          export MIN_CPU=300m
           export MAX_CPU=2
-          export MIN_MEMORY=500Mi
+          export MIN_MEMORY=300Mi
           export MAX_MEMORY=2Gi
           python3 update_vpa.py
           cat vpa.yml
