@@ -11,11 +11,11 @@ spec:
       - memory
       - cpu
       maxAllowed:
-        cpu: '1'
-        memory: 1Gi
+        cpu: '2'
+        memory: 2Gi
       minAllowed:
-        cpu: 300m
-        memory: 300Mi
+        cpu: 500m
+        memory: 500Mi
   targetRef:
     apiVersion: apps/v1
     kind: Deployment
