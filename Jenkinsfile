@@ -40,6 +40,7 @@ print("Environment variables have been written to metrics.env")
             steps {
                 // Source the .env file and make variables available for this and future stages
                 sh '''
+                #!/bin/bash
                 set -a
                 source metrics.env
                 set +a
