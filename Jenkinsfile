@@ -60,9 +60,10 @@ print("Environment variables have been written to metrics.env")
                     projectName: currentBuild.projectName,
                     selector: specific(env.BUILD_NUMBER)
                 )
+                sh 'cat metrics.env'
                 script {
                     // Access the injected environment variables
-                    cat 'metrics.env'
+                    
                     echo "Max CPU Usage: ${env.MAX_CPU_USAGE}"
                     echo "Max Memory Usage: ${env.MAX_MEMORY_USAGE}"
                 }
