@@ -58,7 +58,7 @@ print("Environment variables have been written to metrics.env")
             steps {
                 copyArtifacts(
                     projectName: currentBuild.projectName,
-                    selector: specific('lastSuccessful')
+                    selector: specific(env.BUILD_NUMBER)
                 )
                 script {
                     // Access the injected environment variables
