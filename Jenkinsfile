@@ -58,7 +58,7 @@ print("Environment variables have been written to metrics.env")
             steps {
                 copyArtifacts(
                     projectName: currentBuild.projectName,
-                    selector: lastSuccessful()
+                    selector: new hudson.plugins.copyartifact.StatusBuildSelector(true)
                 )
                 script {
                     // Access the injected environment variables
