@@ -29,10 +29,21 @@ print("Environment variables have been written to metrics.env")
 
         }
 
+        // stage('Inject Environment Variables') {
+        //     steps {
+        //         // Use EnvInject to load variables from the .env file
+        //         injectEnvVars(filePath: 'metrics.env')
+        //     }
+        }
+
         stage('Inject Environment Variables') {
             steps {
-                // Use EnvInject to load variables from the .env file
-                injectEnvVars(filePath: 'metrics.env')
+                // Source the .env file and make variables available for this and future stages
+                sh '''
+                set -a
+                source metrics.env
+                set +a
+                '''
             }
         }
 
