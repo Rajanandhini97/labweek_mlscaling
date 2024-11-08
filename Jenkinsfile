@@ -42,7 +42,7 @@ print("Environment variables have been written to metrics.env")
                 sh '''
                 #!/bin/bash
                 set -a
-                . metrics.env
+                . "$WORKSPACE/metrics.env"
                 set +a
                 '''
             }
