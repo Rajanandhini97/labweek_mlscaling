@@ -7,14 +7,14 @@ pipeline {
                 script {
                     import pandas as pd
 
-                    # Read the CSV file
+                    // Read the CSV file
                     data = pd.read_csv('k8s_resource_usage.csv')
 
-                    # Calculate values needed for environment variables
+                    // Calculate values needed for environment variables
                     max_cpu_usage = data['cpu_usage'].max()
                     max_memory_usage = data['memory_usage'].max()
 
-                    # Write values to a .env file
+                    // Write values to a .env file
                     with open('metrics.env', 'w') as env_file:
                         env_file.write(f"MAX_CPU_USAGE={max_cpu_usage}\n")
                         env_file.write(f"MAX_MEMORY_USAGE={max_memory_usage}\n")
