@@ -27,6 +27,12 @@ print("Environment variables have been written to metrics.env")
                 }
             }
 
+            post {
+                success {
+                    archiveArtifacts artifacts: 'metrics.env', allowEmptyArchive: false
+                }
+            }
+
         }
 
         // stage('Inject Environment Variables') {
@@ -50,8 +56,13 @@ print("Environment variables have been written to metrics.env")
 
         stage('Use Injected Environment Variables') {
             steps {
+                copyArtifacts(
+                    projectName: currentBuild.projectName,
+                    selector: lastSuccessful()
+                )
                 script {
                     // Access the injected environment variables
+                    cat 'metrics.env'
                     echo "Max CPU Usage: ${env.MAX_CPU_USAGE}"
                     echo "Max Memory Usage: ${env.MAX_MEMORY_USAGE}"
                 }
