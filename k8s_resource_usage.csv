@@ -1,0 +1,6 @@
+timestamp,pod_name,cpu_usage,memory_usage,target_cpu_request,target_memory_request
+2024-11-07T12:00:00Z,nginx-1,0.3,256,0.36,307.2
+2024-11-07T12:05:00Z,nginx-2,0.4,512,0.48,614.4
+2024-11-07T12:10:00Z,nginx-1,0.35,300,0.42,360.0
+2024-11-07T12:15:00Z,nginx-2,0.45,480,0.54,576.0
+2024-11-07T12:20:00Z,nginx-1,0.32,270,0.384,324.0
